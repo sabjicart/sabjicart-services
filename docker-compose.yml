@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  sabjicart-service:
+    image: sabjicart:service
+    ports:
+      - 8080:8080
+    environment:
+      - DB_HOST=sabjicart-postgres
+      - DB_USERNAME=sabjicart_admin
+      - DB_PASSWORD=sabjicart_admin
+      - DB_NAME=sabjicart_boot
+      - spring.profiles.active=prod
+    depends_on:
+      - sabjicart-postgres
+    networks:
+      - sabjicart
+
+  sabjicart-postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=sabjicart_admin
+      - POSTGRES_USER=sabjicart_admin
+      - POSTGRES_DB=sabjicart_boot
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - sabjicart
+
+volumes:
+  postgres-data:
+    driver: local
+
+networks:
+  sabjicart:
+    external: true

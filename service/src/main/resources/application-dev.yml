@@ -1,0 +1,15 @@
+spring:
+  jpa:
+    properties.hibernate.default_schema: SABJI_CART
+    generate-ddl: true
+    hibernate.ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/boot"
+    username: admin
+    password: admin
+inspector:
+  secret: ccl
+
+dekh-buy:
+  health-check-url: http://localhost:8080/sabjicart/ping
