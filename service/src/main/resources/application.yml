@@ -7,7 +7,7 @@ spring:
   flyway:
     baselineOnMigrate: true
     locations: classpath:db/migration
-    schemas: SABJI_CART
+    schemas: sabji_cart
   mail:
     host: smtp.gmail.com
     port: 587
