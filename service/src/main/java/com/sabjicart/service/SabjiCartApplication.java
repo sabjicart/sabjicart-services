@@ -12,11 +12,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EntityScan(basePackages = {"com.sabjicart"})
 @EnableJpaRepositories(basePackages = {"com.sabjicart"})
 @EnableScheduling
-public class sabjicartApplication
+public class SabjiCartApplication
 {
 
     public static void main(String[] args) {
-        SpringApplication.run(sabjicartApplication.class, args);
+        SpringApplication.run(SabjiCartApplication.class, args);
     }
 
 }

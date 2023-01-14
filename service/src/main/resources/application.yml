@@ -11,8 +11,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: amcec175@gmail.com
-    password: Admin@175
+    username: sabjicart@admin
+    password: Admin@sabjicart
     properties:
       mail:
         smtp:
@@ -26,7 +26,7 @@ spring:
   profiles:
     active: dev
 jwt:
-  secret: pysphere
+  secret: sabjicart
 address:
   url: https://api.getAddress.io/find/
   key: O-vbZ8Cu4EqwX9XPa_ERLw29608
