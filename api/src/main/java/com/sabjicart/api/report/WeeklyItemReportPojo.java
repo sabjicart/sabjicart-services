@@ -1,13 +1,4 @@
-/*
 
-    Copyright (c) 2022 PySphere Technologies LLP.
-
-    All rights reserved. Patents pending.
-
-
-    Responsible: Aryan Agarwal
-
-*/
 package com.sabjicart.api.report;
 
 import com.sabjicart.api.shared.Denomination;

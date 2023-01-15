@@ -12,7 +12,6 @@ import com.sabjicart.api.model.CartItem;
 import com.sabjicart.api.shared.CartProgressStatus;
 import com.sabjicart.api.shared.CartStatus;
 import com.sabjicart.api.shared.ItemInfo;
-import com.sabjicart.api.shared.UnloadItemInfo;
 import com.sabjicart.core.cart.repository.CartItemRepository;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -44,7 +43,7 @@ public class SaleServiceImpl implements SaleService
         throws ServiceException
     {
         CartResponse cartResponse;
-        List<UnloadItemInfo> unloadItemInfos = new ArrayList<>();
+        List<ItemInfo> itemInfoList = new ArrayList<>();
         try {
             List<ItemPojo> itemPojos = cartItemInfoService.getCartItemInfo(
                 substationId,
@@ -53,11 +52,11 @@ public class SaleServiceImpl implements SaleService
             );
             for (ItemPojo itemPojo : itemPojos) {
                 try {
-                    UnloadItemInfo itemInfo = UnloadItemInfo.builder()
-                                                            .itemId(itemPojo.getItemId())
-                                                            .itemValue(itemPojo.getSaleValue())
-                                                            .build();
-                    unloadItemInfos.add(itemInfo);
+                    ItemInfo itemInfo = ItemInfo.builder()
+                                                .itemId(itemPojo.getItemId())
+                                                .itemValue(itemPojo.getSaleValue())
+                                                .build();
+                    itemInfoList.add(itemInfo);
                 }
                 catch (Exception e) {
                     log.error("Error while fetching item info for item {}",
@@ -68,7 +67,7 @@ public class SaleServiceImpl implements SaleService
             }
             cartResponse = CartResponse.builder()
                                        .cartPlateNumber(cartNumber)
-                                       .unloadItemInfoList(unloadItemInfos)
+                                       .itemInfoList(itemInfoList)
                                        .onDate(onDate)
                                        .substationId(substationId)
                                        .currentProcessStatus(CartStatus.SALEDATA)

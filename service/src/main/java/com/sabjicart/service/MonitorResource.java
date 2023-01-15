@@ -1,9 +1,4 @@
-/*
-    Copyright (c) 2021 PySphere Technologies, LLP.
-    All rights reserved. Patents pending.
 
-    Responsible: Vikram Singh Chouhan
-*/
 package com.sabjicart.service;
 
 import org.springframework.http.HttpStatus;
@@ -19,6 +14,6 @@ public class MonitorResource
     @GetMapping(value = "/ping")
     public ResponseEntity<String> register ()
     {
-        return new ResponseEntity<>("Welcome to Dekh Buy service!! I am feeling Healthy.", HttpStatus.OK);
+        return new ResponseEntity<>("Welcome to Sabji Cart service!! I am feeling Healthy.", HttpStatus.OK);
     }
 }

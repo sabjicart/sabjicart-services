@@ -12,7 +12,6 @@ import com.sabjicart.api.model.CartItem;
 import com.sabjicart.api.shared.CartProgressStatus;
 import com.sabjicart.api.shared.CartStatus;
 import com.sabjicart.api.shared.ItemInfo;
-import com.sabjicart.api.shared.UnloadItemInfo;
 import com.sabjicart.core.cart.repository.CartItemRepository;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -46,7 +45,7 @@ public class LoadServiceImpl implements LoadService
         throws ServiceException
     {
         CartResponse cartResponse;
-        List<UnloadItemInfo> unloadItemInfos = new ArrayList<>();
+        List<ItemInfo> itemInfoList = new ArrayList<>();
         try {
             List<ItemPojo> itemPojos = cartItemInfoService.getCartItemInfo(
                 substationId,
@@ -55,11 +54,11 @@ public class LoadServiceImpl implements LoadService
             );
             for (ItemPojo itemPojo : itemPojos) {
                 try {
-                    UnloadItemInfo itemInfo = UnloadItemInfo.builder()
-                                                            .itemId(itemPojo.getItemId())
-                                                            .itemValue(itemPojo.getLoadValue())
-                                                            .build();
-                    unloadItemInfos.add(itemInfo);
+                    ItemInfo itemInfo = ItemInfo.builder()
+                                                .itemId(itemPojo.getItemId())
+                                                .itemValue(itemPojo.getLoadValue())
+                                                .build();
+                    itemInfoList.add(itemInfo);
                 }
                 catch (Exception e) {
                     log.error("Error while fetching item info for item {}",
@@ -70,7 +69,7 @@ public class LoadServiceImpl implements LoadService
             }
             cartResponse = CartResponse.builder()
                                        .cartPlateNumber(cartNumber)
-                                       .unloadItemInfoList(unloadItemInfos)
+                                       .itemInfoList(itemInfoList)
                                        .onDate(onDate)
                                        .substationId(substationId)
                                        .currentProcessStatus(CartStatus.LOAD)
@@ -116,7 +115,8 @@ public class LoadServiceImpl implements LoadService
                 );
 
             // Delete existing items from cart which are no more available
-            itemsToDelete = filterDeletedItems(cartItems,
+            itemsToDelete = filterDeletedItems(
+                cartItems,
                 cartLoadRequest.getItemInfoList()
             );
             cartItemRepository.deleteAllInBatch(itemsToDelete);
@@ -138,23 +138,27 @@ public class LoadServiceImpl implements LoadService
 
                 CartItem cartItem;
                 if (cartItemMap.containsKey(itemUpdateInfo.getItemId())) {
-                    cartItem = cartItemMap.get(itemUpdateInfo.getItemId());
+                    cartItem =
+                        cartItemMap.get(itemUpdateInfo.getItemId());
                     cartItem.setQuantityLoad(itemUpdateInfo.getItemValue());
                     cartItem.setTimeLoaded(LocalDateTime.now());
                     cartItem.setLoadStatus(CartProgressStatus.COMPLETED);
                 }
                 else {
                     cartItem = CartItem.builder()
-                                       .cartPlateNumber(cartNumber)
-                                       .itemId(itemUpdateInfo.getItemId())
-                                       .quantityLoad(itemUpdateInfo.getItemValue())
-                                       .processingDate(onDate)
-                                       .substationId(substationId)
-                                       .timeLoaded(LocalDateTime.now())
-                                       .loadStatus(CartProgressStatus.COMPLETED)
-                                       .unloadStatus(CartProgressStatus.TODO)
-                                       .saleStatus(CartProgressStatus.TODO)
-                                       .build();
+                                                   .cartPlateNumber(cartNumber)
+                                                   .itemId(itemUpdateInfo.getItemId())
+                                                   .quantityLoad(itemUpdateInfo.getItemValue())
+                                                   .processingDate(onDate)
+                                                   .substationId(substationId)
+                                                   .timeLoaded(LocalDateTime.now())
+                                                   .loadStatus(
+                                                       CartProgressStatus.COMPLETED)
+                                                   .unloadStatus(
+                                                       CartProgressStatus.TODO)
+                                                   .saleStatus(
+                                                       CartProgressStatus.TODO)
+                                                   .build();
 
                     log.info(
                         "Adding new item from cart={}, substation={}, onDate={}, item={}",
@@ -178,6 +182,7 @@ public class LoadServiceImpl implements LoadService
                 substationId,
                 onDate
             );
+
 
         }
         catch (Exception e) {

@@ -1,12 +1,4 @@
-/*
 
-    Copyright (c) 2022 PySphere Technologies LLP.
-
-    All rights reserved. Patents pending.
-
-    Responsible: Ayush Kumar
-
-*/
 package com.sabjicart.api.model;
 
 import com.sabjicart.api.parser.LocalDateConverter;

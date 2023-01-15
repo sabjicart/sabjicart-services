@@ -12,7 +12,6 @@ import com.sabjicart.api.model.CartItem;
 import com.sabjicart.api.shared.CartProgressStatus;
 import com.sabjicart.api.shared.CartStatus;
 import com.sabjicart.api.shared.ItemInfo;
-import com.sabjicart.api.shared.UnloadItemInfo;
 import com.sabjicart.core.cart.repository.CartItemRepository;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -43,7 +42,7 @@ public class UnloadServiceImpl implements UnloadService
         throws ServiceException
     {
         CartResponse cartResponse;
-        List<UnloadItemInfo> unloadItemInfos = new ArrayList<>();
+        List<ItemInfo> itemInfoList = new ArrayList<>();
         try {
             List<ItemPojo> itemPojos = cartItemInfoService.getCartItemInfo(
                 substationId,
@@ -52,11 +51,11 @@ public class UnloadServiceImpl implements UnloadService
             );
             for (ItemPojo itemPojo : itemPojos) {
                 try {
-                    UnloadItemInfo itemInfo = UnloadItemInfo.builder()
-                                                            .itemId(itemPojo.getItemId())
-                                                            .itemValue(itemPojo.getUnloadValue())
-                                                            .build();
-                    unloadItemInfos.add(itemInfo);
+                    ItemInfo itemInfo = ItemInfo.builder()
+                                                .itemId(itemPojo.getItemId())
+                                                .itemValue(itemPojo.getUnloadValue())
+                                                .build();
+                    itemInfoList.add(itemInfo);
                 }
                 catch (Exception e) {
                     log.error("Error while fetching item info for item {}",
@@ -67,7 +66,7 @@ public class UnloadServiceImpl implements UnloadService
             }
             cartResponse = CartResponse.builder()
                                        .cartPlateNumber(cartNumber)
-                                       .unloadItemInfoList(unloadItemInfos)
+                                       .itemInfoList(itemInfoList)
                                        .onDate(onDate)
                                        .substationId(substationId)
                                        .currentProcessStatus(CartStatus.UNLOAD)
@@ -113,7 +112,8 @@ public class UnloadServiceImpl implements UnloadService
             }
             for (ItemInfo itemInfo : cartUnloadRequest.getItemInfoList()) {
                 if (cartItemMap.containsKey(itemInfo.getItemId())) {
-                    CartItem cartItem = cartItemMap.get(itemInfo.getItemId());
+                    CartItem cartItem =
+                        cartItemMap.get(itemInfo.getItemId());
                     cartItem.setQuantityUnload(itemInfo.getItemValue());
                     cartItem.setTimeUnloaded(LocalDateTime.now());
                     cartItem.setUnloadStatus(CartProgressStatus.COMPLETED);
@@ -123,7 +123,8 @@ public class UnloadServiceImpl implements UnloadService
                     CartItem newCartItem = CartItem.builder()
                                                    .cartPlateNumber(cartNumber)
                                                    .itemId(itemInfo.getItemId())
-                                                   .quantityUnload(itemInfo.getItemValue())
+                                                   .quantityUnload(
+                                                       itemInfo.getItemValue())
                                                    .processingDate(onDate)
                                                    .substationId(substationId)
                                                    .timeUnloaded(LocalDateTime.now())

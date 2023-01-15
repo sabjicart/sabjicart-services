@@ -2,7 +2,6 @@
 package com.sabjicart.service.cart.inventory;
 
 import com.sabjicart.api.cart.inventory.CartInventoryService;
-import com.sabjicart.api.cart.inventory.UnloadHelperService;
 import com.sabjicart.api.exceptions.ServiceException;
 import com.sabjicart.api.messages.cart.inventory.CartRequest;
 import com.sabjicart.api.messages.cart.inventory.CartResponse;
@@ -34,7 +33,6 @@ public class CartInventoryResource
 {
 
     CartInventoryService cartInventoryService;
-    UnloadHelperService unloadHelperService;
 
     @GetMapping(value = "/support/cart/{status}")
     public ResponseEntity<CartResponse> getCartItemsAsOfDate (
@@ -42,8 +40,7 @@ public class CartInventoryResource
         long substationId,
         @RequestParam(value = "cartPlateNumber")
         @NotEmpty(message = "please provide a valid cart number") String cartPlateNumber,
-        @RequestParam(value = "onDate",
-            required = false)
+        @RequestParam(value = "onDate", required = false)
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
         LocalDate onDate,
         @PathVariable

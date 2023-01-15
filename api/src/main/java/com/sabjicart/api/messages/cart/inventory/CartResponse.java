@@ -3,11 +3,12 @@ package com.sabjicart.api.messages.cart.inventory;
 
 import com.sabjicart.api.messages.inoutbound.Response;
 import com.sabjicart.api.shared.CartStatus;
-import com.sabjicart.api.shared.UnloadItemInfo;
+import com.sabjicart.api.shared.ItemInfo;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -25,7 +26,7 @@ public class CartResponse extends Response
 {
     long substationId;
     String cartPlateNumber;
-    List<UnloadItemInfo> unloadItemInfoList;
+    List<ItemInfo> itemInfoList;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     LocalDate onDate;
     @Enumerated(EnumType.STRING)
@@ -33,6 +34,6 @@ public class CartResponse extends Response
 
     public CartResponse ()
     {
-        unloadItemInfoList = new ArrayList<>();
+        itemInfoList = new ArrayList<>();
     }
 }

@@ -9,6 +9,8 @@ This is sabji-cart Backend API service running on Postgres Database.
 * This is sabji-cart Backend API service running on Postgres Database.
 * Version : 1.0
 
+[Swagger Link](http://localhost:8080/sabjicart/swagger/swagger-ui/index.html?configUrl=/sabjicart/swagger/api-docs/swagger-config)
+
 
 ### How do I get set up? ###
 

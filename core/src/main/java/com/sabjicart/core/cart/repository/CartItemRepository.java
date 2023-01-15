@@ -23,11 +23,11 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long>
      */
     List<CartItem> findAllByCartPlateNumberAndProcessingDateAndSubstationId (
         @Param("cartPlateNumber")
-        String cartPlateNumber,
+            String cartPlateNumber,
         @Param("processingDate")
-        LocalDate processingDate,
+            LocalDate processingDate,
         @Param("substationId")
-        long substationId);
+            long substationId);
 
     /**
      * Get cart items by cart plate number,processing date and substation id
@@ -38,31 +38,13 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long>
      */
     List<CartItem> findAllByCartPlateNumberAndProcessingDateAndSubstationIdAndLoadStatus (
         @Param("cartPlateNumber")
-        String cartPlateNumber,
+            String cartPlateNumber,
         @Param("processingDate")
-        LocalDate processingDate,
+            LocalDate processingDate,
         @Param("substationId")
-        long substationId,
+            long substationId,
         @Param("loadStatus")
-        CartProgressStatus loadStatus);
-
-    /**
-     * Get cart items by substation id,cart plate number,processing date and sale status
-     * @param cartPlateNumber
-     * @param processingDate
-     * @param substationId
-     * @param saleStatus
-     * @return
-     */
-    List<CartItem> findAllBySubstationIdAndCartPlateNumberAndProcessingDateAndSaleStatus (
-        @Param("substationId")
-        long substationId,
-        @Param("cartPlateNumber")
-        String cartPlateNumber,
-        @Param("processingDate")
-        LocalDate processingDate,
-        @Param("saleStatus")
-        CartProgressStatus saleStatus);
+            CartProgressStatus loadStatus);
 
     /**
      * Get cart items by processing date and substation id
@@ -72,9 +54,9 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long>
      */
     List<CartItem> findAllByProcessingDateAndSubstationId (
         @Param("processingDate")
-        LocalDate processingDate,
+            LocalDate processingDate,
         @Param("substationId")
-        long substationId);
+            long substationId);
 
     /**
      * Get cart items latest loaded date for a cart and substation id
@@ -87,9 +69,9 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long>
             + " and ci.cartPlateNumber =:cartPlateNumber and ci.loadStatus = 'COMPLETED'")
     LocalDate findLatestLoadedDateForCart (
         @Param("substationId")
-        long substationId,
+            long substationId,
         @Param("cartPlateNumber")
-        String cartPlateNumber);
+            String cartPlateNumber);
 
     /**
      * Get cart items latest unloaded date for a cart and substation id
@@ -102,9 +84,9 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long>
             + " and ci.cartPlateNumber =:cartPlateNumber and ci.unloadStatus = 'COMPLETED'")
     LocalDate findLatestUnloadedDateForCart (
         @Param("substationId")
-        long substationId,
+            long substationId,
         @Param("cartPlateNumber")
-        String cartPlateNumber);
+            String cartPlateNumber);
 
     /**
      * Get cart items latest sale data date for a cart and substation id
@@ -117,7 +99,7 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long>
             + " and ci.cartPlateNumber =:cartPlateNumber and ci.saleStatus = 'COMPLETED'")
     LocalDate findLatestSaleDataDateForCart (
         @Param("substationId")
-        long substationId,
+            long substationId,
         @Param("cartPlateNumber")
-        String cartPlateNumber);
+            String cartPlateNumber);
 }
