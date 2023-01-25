@@ -102,4 +102,10 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long>
             long substationId,
         @Param("cartPlateNumber")
             String cartPlateNumber);
+
+    List<CartItem> findAllByCartPlateNumberAndItemId(
+        @Param("cartPlateNumber")
+            String cartPlateNumber,
+        @Param("itemId")
+            String itemId);
 }

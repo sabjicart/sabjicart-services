@@ -2,6 +2,7 @@
 package com.sabjicart.api.report.cart;
 
 import com.sabjicart.api.exceptions.ServiceException;
+import com.sabjicart.api.messages.report.ReportItemResponse;
 import com.sabjicart.api.messages.report.ReportResponse;
 
 import java.time.LocalDate;
@@ -20,4 +21,8 @@ public interface CartReportService
         long substationId,
         String cartPlateNumber,
         LocalDate date) throws ServiceException;
+
+    ReportItemResponse getCartItemReport (
+            String cartPlateNumber,
+            String itemId) throws ServiceException;
 }

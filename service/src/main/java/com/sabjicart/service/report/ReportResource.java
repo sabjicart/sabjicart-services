@@ -2,6 +2,7 @@ package com.sabjicart.service.report;
 
 import com.sabjicart.api.exceptions.ServiceException;
 import com.sabjicart.api.messages.inoutbound.ResponseUtil;
+import com.sabjicart.api.messages.report.ReportItemResponse;
 import com.sabjicart.api.messages.report.ReportResponse;
 import com.sabjicart.api.messages.report.WeeklyItemReportResponse;
 import com.sabjicart.api.report.cart.CartReportService;
@@ -53,6 +54,32 @@ public class ReportResource
             ResponseUtil.error(response, e.getMessage());
             return new ResponseEntity<>(response,
                 HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/report/cart/item")
+    public ResponseEntity<ReportItemResponse> getCartItemReport (
+            @RequestParam("cartPlateNumber")
+            String cartPlateNumber,
+            @RequestParam("itemId")
+            String itemId
+            )
+    {
+        // Declaration
+        ReportItemResponse response = new ReportItemResponse();
+
+        try {
+            response = cartReportService.getCartItemReport(
+                    cartPlateNumber,
+                    itemId
+            );
+        }
+        catch (ServiceException e) {
+            ResponseUtil.error(response, e.getMessage());
+            return new ResponseEntity<>(response,
+                    HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
         return new ResponseEntity<>(response, HttpStatus.OK);

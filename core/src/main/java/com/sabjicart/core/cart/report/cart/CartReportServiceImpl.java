@@ -6,9 +6,13 @@ import com.sabjicart.api.messages.common.AnomalyDetectionService;
 import com.sabjicart.api.messages.common.CartItemInfoService;
 import com.sabjicart.api.messages.common.ItemPojo;
 import com.sabjicart.api.messages.inoutbound.ResponseUtil;
+import com.sabjicart.api.messages.report.ReportItemResponse;
 import com.sabjicart.api.messages.report.ReportResponse;
+import com.sabjicart.api.model.CartItem;
+import com.sabjicart.api.report.ReportCartItemPojo;
 import com.sabjicart.api.report.ReportItemPojo;
 import com.sabjicart.api.report.cart.CartReportService;
+import com.sabjicart.core.cart.repository.CartItemRepository;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -30,6 +34,9 @@ public class CartReportServiceImpl implements CartReportService
     CartItemInfoService itemPojoInfoService;
 
     AnomalyDetectionService anomalyDetectionService;
+
+    CartItemRepository cartItemRepository;
+
 
     @Override
     public ReportResponse getCartReport (
@@ -89,5 +96,44 @@ public class CartReportServiceImpl implements CartReportService
 
         ResponseUtil.success(reportResponse);
         return reportResponse;
+    }
+
+    @Override
+    public ReportItemResponse getCartItemReport(String cartPlateNumber, String itemId) throws ServiceException {
+        ReportItemResponse reportItemResponse = new ReportItemResponse();
+        List<ReportCartItemPojo> reportCartItemPojos = new ArrayList<>();
+        try {
+            List<ItemPojo> itemPojos = itemPojoInfoService.getCartItemInfo(cartPlateNumber, itemId);
+            for (ItemPojo itemPojo : itemPojos) {
+                ReportCartItemPojo reportItemPojo = ReportCartItemPojo.builder()
+                        .denomination(
+                                itemPojo.getDenomination())
+                        .saleValue(
+                                itemPojo.getSaleValue())
+                        .loadValue(
+                                itemPojo.getLoadValue())
+                        .unloadValue(
+                                itemPojo.getUnloadValue())
+                        .itemName(
+                                itemPojo.getItemName())
+                        .itemId(
+                                itemPojo.getItemId())
+                        .date(itemPojo.getDate())
+                        .build();
+                reportCartItemPojos.add(reportItemPojo);
+            }
+            anomalyDetectionService.cartItemPojoAnomalyInflater(reportCartItemPojos);
+            reportItemResponse.setItems(reportCartItemPojos);
+        } catch (Exception e) {
+            log.error(
+                "Error fetching cart report for  cartPlateNumber={}, date={}",
+                cartPlateNumber,
+                itemId
+            );
+            throw new ServiceException("Error fetching cart report", e);
+        }
+
+        ResponseUtil.success(reportItemResponse);
+        return reportItemResponse;
     }
 }

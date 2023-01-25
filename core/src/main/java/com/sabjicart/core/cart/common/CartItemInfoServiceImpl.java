@@ -143,6 +143,7 @@ public class CartItemInfoServiceImpl implements CartItemInfoService
                                             .loadStatus(cartItem.getLoadStatus())
                                             .unloadStatus(cartItem.getUnloadStatus())
                                             .saleStatus(cartItem.getSaleStatus())
+                                            .date(cartItem.getProcessingDate())
                                             .build();
                 itemPojos.add(itemPojo);
             }
@@ -186,5 +187,31 @@ public class CartItemInfoServiceImpl implements CartItemInfoService
             throw new ServiceException("Invalid cart status");
 
         }
+    }
+
+    @Override
+    public List<ItemPojo> getCartItemInfo( String cartPlateNumber, String itemId) throws ServiceException {
+
+        List<ItemPojo> itemPojos;
+        try {
+            List<CartItem> cartItems =
+                cartItemRepository.findAllByCartPlateNumberAndItemId(
+                    cartPlateNumber,
+                    itemId
+                );
+            itemPojos = cartItemToItemPojoConverter(cartItems);
+        }
+        catch (ServiceException se) {
+            throw se;
+        }
+        catch (Exception e) {
+            log.error(
+                "Error fetching cart items for cartPlateNumber={}, substationId={}, itemId={}",
+                cartPlateNumber,
+                itemId
+            );
+            throw new ServiceException("Error fetching cart items", e);
+        }
+        return itemPojos;
     }
 }

@@ -59,4 +59,6 @@ public interface CartItemInfoService
     LocalDate getLatestProcessedDateForCart (
         long substationId, String cartPlateNumber, CartStatus cartStatus)
         throws ServiceException;
+
+    List<ItemPojo> getCartItemInfo (String cartPlateNumber, String itemId) throws ServiceException;
 }

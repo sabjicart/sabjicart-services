@@ -10,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -28,4 +29,5 @@ public class ItemPojo
     @Enumerated(EnumType.STRING)
     CartProgressStatus saleStatus;
     Denomination denomination;
+    LocalDate date;
 }

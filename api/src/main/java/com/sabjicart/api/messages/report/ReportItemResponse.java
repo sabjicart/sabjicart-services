@@ -4,11 +4,7 @@ package com.sabjicart.api.messages.report;
 import com.sabjicart.api.messages.inoutbound.Response;
 import com.sabjicart.api.report.ReportCartItemPojo;
 import com.sabjicart.api.report.ReportItemPojo;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.List;
@@ -18,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ReportResponse extends Response
+public class ReportItemResponse extends Response
 {
-    List<ReportItemPojo> items;
+    List<ReportCartItemPojo> items;
 }

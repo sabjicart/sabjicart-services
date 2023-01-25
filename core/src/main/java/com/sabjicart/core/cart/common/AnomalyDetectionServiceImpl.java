@@ -2,6 +2,7 @@ package com.sabjicart.core.cart.common;
 
 import com.sabjicart.api.exceptions.ServiceException;
 import com.sabjicart.api.messages.common.AnomalyDetectionService;
+import com.sabjicart.api.report.ReportCartItemPojo;
 import com.sabjicart.api.report.ReportItemPojo;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -46,5 +47,25 @@ public class AnomalyDetectionServiceImpl implements AnomalyDetectionService
         }
 
         return reportItemPojos;
+    }
+
+    @Override
+    public List<ReportCartItemPojo> cartItemPojoAnomalyInflater(List<ReportCartItemPojo> reportCartItemPojos) throws ServiceException {
+        for (ReportCartItemPojo reportCartItemPojo : reportCartItemPojos) {
+            try {
+                double anomaly = calculateAnomaly(
+                    reportCartItemPojo.getLoadValue(),
+                    reportCartItemPojo.getUnloadValue(),
+                    reportCartItemPojo.getSaleValue()
+                );
+                reportCartItemPojo.setAnomaly(anomaly); // concurrent modification exception
+            }
+            catch (Exception e) {
+                log.error(
+                    "Error evaluating anomaly for item: " + reportCartItemPojo);
+                throw new ServiceException("Error evaluating anomaly", e);
+            }
+        }
+        return reportCartItemPojos;
     }
 }

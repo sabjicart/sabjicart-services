@@ -2,6 +2,7 @@
 package com.sabjicart.api.messages.common;
 
 import com.sabjicart.api.exceptions.ServiceException;
+import com.sabjicart.api.report.ReportCartItemPojo;
 import com.sabjicart.api.report.ReportItemPojo;
 
 import java.util.List;
@@ -24,6 +25,9 @@ public interface AnomalyDetectionService
      * @return
      */
     List<ReportItemPojo> itemPojoAnomalyInflater (List<ReportItemPojo> reportItemPojos)
+        throws ServiceException;
+
+    List<ReportCartItemPojo> cartItemPojoAnomalyInflater (List<ReportCartItemPojo> reportCartItemPojos)
         throws ServiceException;
 
 }
